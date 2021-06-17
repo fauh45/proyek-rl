@@ -37,7 +37,7 @@ class MuZeroConfig:
         self.num_workers = 3
         self.selfplay_on_gpu = True
         self.max_moves = 500  # Maximum number of moves if game is not finished before
-        self.num_simulations = 50  # Number of future moves self-simulated
+        self.num_simulations = 25  # Number of future moves self-simulated
         self.discount = 0.897  # Chronological discount of the reward
         # Number of moves before dropping the temperature given by visit_softmax_temperature_fn to 0 (ie selecting the best action). If None, visit_softmax_temperature_fn is used every time
         self.temperature_threshold = None
@@ -51,18 +51,18 @@ class MuZeroConfig:
         self.pb_c_init = 1.25
 
         # Network
-        self.network = "fullyconnected"  # "resnet" / "fullyconnected"
+        self.network = "resnet" # "resnet" / "fullyconnected"
         # Value and reward are scaled (with almost sqrt) and encoded on a vector with a range of -support_size to support_size. Choose it so that support_size <= sqrt(max(abs(discounted reward)))
         self.support_size = 10
 
         # Residual Network
         # Downsample observations before representation network, False / "CNN" (lighter) / "resnet" (See paper appendix Network Architecture)
         self.downsample = False
-        self.blocks = 1  # Number of blocks in the ResNet
-        self.channels = 2  # Number of channels in the ResNet
-        self.reduced_channels_reward = 2  # Number of channels in reward head
-        self.reduced_channels_value = 2  # Number of channels in value head
-        self.reduced_channels_policy = 2  # Number of channels in policy head
+        self.blocks = 8  # Number of blocks in the ResNet
+        self.channels = 16  # Number of channels in the ResNet
+        self.reduced_channels_reward = 32  # Number of channels in reward head
+        self.reduced_channels_value = 32  # Number of channels in value head
+        self.reduced_channels_policy = 32  # Number of channels in policy head
         # Define the hidden layers in the reward head of the dynamic network
         self.resnet_fc_reward_layers = []
         # Define the hidden layers in the value head of the prediction network
@@ -205,7 +205,7 @@ class Game(AbstractGame):
         Display the game observation.
         """
         self.env.render()
-        input("Press enter to take a step ")
+        # input("Press enter to take a step ")
 
     def action_to_string(self, action_number):
         """
