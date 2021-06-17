@@ -35,10 +35,10 @@ class MuZeroConfig:
         # Self-Play
         # Number of simultaneous threads/workers self-playing to feed the replay buffer
         self.num_workers = 5
-        self.selfplay_on_gpu = False
+        self.selfplay_on_gpu = True
         self.max_moves = 500  # Maximum number of moves if game is not finished before
         self.num_simulations = 50  # Number of future moves self-simulated
-        self.discount = 0.997  # Chronological discount of the reward
+        self.discount = 0.897  # Chronological discount of the reward
         # Number of moves before dropping the temperature given by visit_softmax_temperature_fn to 0 (ie selecting the best action). If None, visit_softmax_temperature_fn is used every time
         self.temperature_threshold = None
 
@@ -88,7 +88,7 @@ class MuZeroConfig:
                                          :-3], datetime.datetime.now().strftime("%Y-%m-%d--%H-%M-%S"))  # Path to store the model weights and TensorBoard logs
         self.save_model = True  # Save the checkpoint in results_path as model.checkpoint
         # Total number of training steps (ie weights update according to a batch)
-        self.training_steps = 10000
+        self.training_steps = 1000
         self.batch_size = 128  # Number of parts of games to train on at each training step
         # Number of training steps before using the model for self-playing
         self.checkpoint_interval = 10
@@ -119,7 +119,7 @@ class MuZeroConfig:
         # Reanalyze (See paper appendix Reanalyse)
         # Use the last model to provide a fresher, stable n-step value (See paper appendix Reanalyze)
         self.use_last_model_value = True
-        self.reanalyse_on_gpu = False
+        self.reanalyse_on_gpu = True
 
         # Adjust the self play / training ratio to avoid over/underfitting
         self.self_play_delay = 0  # Number of seconds to wait after each played game
