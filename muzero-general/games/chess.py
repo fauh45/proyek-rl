@@ -34,7 +34,7 @@ class MuZeroConfig:
 
         # Self-Play
         # Number of simultaneous threads/workers self-playing to feed the replay buffer
-        self.num_workers = 5
+        self.num_workers = 3
         self.selfplay_on_gpu = True
         self.max_moves = 500  # Maximum number of moves if game is not finished before
         self.num_simulations = 50  # Number of future moves self-simulated
