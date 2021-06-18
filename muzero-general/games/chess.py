@@ -34,7 +34,7 @@ class MuZeroConfig:
 
         # Self-Play
         # Number of simultaneous threads/workers self-playing to feed the replay buffer
-        self.num_workers = 3
+        self.num_workers = 4
         self.selfplay_on_gpu = True
         self.max_moves = 500  # Maximum number of moves if game is not finished before
         self.num_simulations = 25  # Number of future moves self-simulated
@@ -149,6 +149,7 @@ class Game(AbstractGame):
 
     def __init__(self, seed=None):
         self.env = chess_v3.env()
+        self.current_agent = 0
         if seed is not None:
             self.env.seed(seed)
 
@@ -164,6 +165,7 @@ class Game(AbstractGame):
         """
         self.env.step(action)
         observation, reward, done, _ = self.env.last()
+        self.current_agent = (self.current_agent + 1) % 2
 
         return observation["observation"], reward, done
 
@@ -181,6 +183,9 @@ class Game(AbstractGame):
         obs, _, _, _ = self.env.last()
 
         return list(numpy.flatnonzero(obs["action_mask"]))
+    
+    def to_play(self):
+        return self.current_agent
 
     def reset(self):
         """
@@ -191,6 +196,7 @@ class Game(AbstractGame):
         """
         self.env.reset()
         observation, reward, done, info = self.env.last()
+        self.current_agent = 0
 
         return observation["observation"]
 
@@ -205,7 +211,26 @@ class Game(AbstractGame):
         Display the game observation.
         """
         self.env.render()
-        # input("Press enter to take a step ")
+        input("Press enter to take a step ")
+
+    def human_to_action(self):
+          """
+          For multiplayer games, ask the user for a legal action
+          and return the corresponding action number.
+
+          Returns:
+              An integer from the action space.
+          """
+          legal_actions = self.legal_actions()
+          
+          print("Legal Actions are...")
+          for action in legal_actions:
+              print(self.action_to_string(action))
+
+          choice = input(f"Enter the action number to play for the player {self.to_play()}: ")
+          while choice not in [str(action) for action in self.legal_actions()]:
+              choice = input("Enter another action number : ")
+          return int(choice)
 
     def action_to_string(self, action_number):
         """
