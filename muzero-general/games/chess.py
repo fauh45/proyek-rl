@@ -34,7 +34,7 @@ class MuZeroConfig:
 
         # Self-Play
         # Number of simultaneous threads/workers self-playing to feed the replay buffer
-        self.num_workers = 4
+        self.num_workers = 3
         self.selfplay_on_gpu = True
         self.max_moves = 500  # Maximum number of moves if game is not finished before
         self.num_simulations = 25  # Number of future moves self-simulated
@@ -88,7 +88,7 @@ class MuZeroConfig:
                                          :-3], datetime.datetime.now().strftime("%Y-%m-%d--%H-%M-%S"))  # Path to store the model weights and TensorBoard logs
         self.save_model = True  # Save the checkpoint in results_path as model.checkpoint
         # Total number of training steps (ie weights update according to a batch)
-        self.training_steps = 1000
+        self.training_steps = 20000
         self.batch_size = 128  # Number of parts of games to train on at each training step
         # Number of training steps before using the model for self-playing
         self.checkpoint_interval = 10
