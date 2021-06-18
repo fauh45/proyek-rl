@@ -30,7 +30,7 @@ class MuZeroConfig:
         # Evaluate
         # Turn Muzero begins to play (0: MuZero plays first, 1: MuZero plays second)
         self.muzero_player = 0
-        self.opponent = None  # Hard coded agent that MuZero faces to assess his progress in multiplayer games. It doesn't influence training. None, "random" or "expert" if implemented in the Game class
+        self.opponent = "random"  # Hard coded agent that MuZero faces to assess his progress in multiplayer games. It doesn't influence training. None, "random" or "expert" if implemented in the Game class
 
         # Self-Play
         # Number of simultaneous threads/workers self-playing to feed the replay buffer
