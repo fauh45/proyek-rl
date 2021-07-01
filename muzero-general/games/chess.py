@@ -243,4 +243,4 @@ class Game(AbstractGame):
             String representing the action.
         """
 
-        return f"{action_number}. {(action_number/(8*73), (action_number/73)%8, action_number%(8*8))}"
+        return f"{action_number}. {(action_number // (8 * 73), (action_number // 73)%8, action_number % (8 * 8))}"
