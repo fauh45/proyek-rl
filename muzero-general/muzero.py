@@ -20,6 +20,8 @@ import self_play
 import shared_storage
 import trainer
 
+from session import Session
+
 
 class MuZero:
     """
@@ -352,7 +354,7 @@ class MuZero:
         self.shared_storage_worker = None
 
     def test(
-        self, render=True, opponent=None, muzero_player=None, num_tests=1, num_gpus=0
+        self, render=True, opponent=None, muzero_player=None, num_tests=1, num_gpus=0, session=None
     ):
         """
         Test the model in a dedicated thread.
@@ -382,7 +384,7 @@ class MuZero:
             results.append(
                 ray.get(
                     self_play_worker.play_game.remote(
-                        0, 0, render, opponent, muzero_player,
+                        0, 0, render, opponent, muzero_player, session
                     )
                 )
             )
