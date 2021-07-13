@@ -51,7 +51,7 @@ class MuZeroConfig:
         self.pb_c_init = 1.25
 
         # Network
-        self.network = "resnet" # "resnet" / "fullyconnected"
+        self.network = "resnet"  # "resnet" / "fullyconnected"
         # Value and reward are scaled (with almost sqrt) and encoded on a vector with a range of -support_size to support_size. Choose it so that support_size <= sqrt(max(abs(discounted reward)))
         self.support_size = 10
 
@@ -183,7 +183,7 @@ class Game(AbstractGame):
         obs, _, _, _ = self.env.last()
 
         return list(numpy.flatnonzero(obs["action_mask"]))
-    
+
     def to_play(self):
         return self.current_agent
 
@@ -211,26 +211,26 @@ class Game(AbstractGame):
         Display the game observation.
         """
         self.env.render()
-        input("Press enter to take a step ")
 
     def human_to_action(self):
-          """
-          For multiplayer games, ask the user for a legal action
-          and return the corresponding action number.
+        """
+        For multiplayer games, ask the user for a legal action
+        and return the corresponding action number.
 
-          Returns:
-              An integer from the action space.
-          """
-          legal_actions = self.legal_actions()
-          
-          print("Legal Actions are...")
-          for action in legal_actions:
-              print(self.action_to_string(action))
+        Returns:
+            An integer from the action space.
+        """
+        legal_actions = self.legal_actions()
 
-          choice = input(f"Enter the action number to play for the player {self.to_play()}: ")
-          while choice not in [str(action) for action in self.legal_actions()]:
-              choice = input("Enter another action number : ")
-          return int(choice)
+        print("Legal Actions are...")
+        for action in legal_actions:
+            print(self.action_to_string(action))
+
+        choice = input(
+            f"Enter the action number to play for the player {self.to_play()}: ")
+        while choice not in [str(action) for action in self.legal_actions()]:
+            choice = input("Enter another action number : ")
+        return int(choice)
 
     def action_to_string(self, action_number):
         """
@@ -243,4 +243,4 @@ class Game(AbstractGame):
             String representing the action.
         """
 
-        return f"{action_number}. {(action_number/(8*73), (action_number/73)%8, action_number%(8*8))}"
+        return f"{action_number}. {(action_number // (8 * 73), (action_number // 73)%8, action_number % (8 * 8))}"
