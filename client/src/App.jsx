@@ -6,11 +6,11 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 //Importing Pages
 import landing_page_play from './pages/landing_page_play';
-//import landing_page_watch from './pages/landing_page_watch';
+import landing_page_watch from './pages/landing_page_watch';
 import about_us from './pages/about_us';
 import dashboard from './pages/dashboard';
 import explaination from './pages/explaination';
-import landing_page_watch from './pages/landing_page_watch';
+import spectator from './pages/spectator';
 
 
 function App() {
@@ -19,10 +19,11 @@ function App() {
       <div className="App">
         <Switch>
           <Route path="/" exact component={landing_page_play}/>
-          <Route path="/spectating" component={landing_page_watch}/>
+          <Route path="/spectator" component={landing_page_watch}/>
           <Route path="/home" component={landing_page_play}/>
           <Route path="/about-us" component={about_us}/>
           <Route path="/dashboard-play" component={dashboard}/>
+          <Route path="/dashboard-spectator" component={spectator}/>
           <Route path="/explaination" component={explaination}/>
         </Switch>
       </div>

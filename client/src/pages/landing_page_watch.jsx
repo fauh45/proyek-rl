@@ -14,7 +14,7 @@ function landing_page_watch() {
           <h5>Menggunakan teknologi paling canggih dari riset tingkat tinggi oleh DeepMind</h5>
           <h5>Menciptakan AI yang lebih pintar dari manusia (walaupun sama kita sih kayaknya gak).</h5>
           <ul className="nav-links">
-          <Link to="/dashboard-play">
+          <Link to="/dashboard-spectator">
                 <Button variant="dark" size="lg">WATCH</Button>
             </Link>
           </ul></center>

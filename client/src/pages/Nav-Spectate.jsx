@@ -17,7 +17,7 @@ function navspectate() {
             <Link style={navStyle} to="/about-us">
                 <li>About Us</li>
             </Link>
-            <Link to="/dashboard-play">
+            <Link to="/dashboard-spectator">
                 <Button variant="dark" size="sm">WATCH</Button>
             </Link>
         </ul>
