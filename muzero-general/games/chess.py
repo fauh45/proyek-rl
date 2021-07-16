@@ -2,6 +2,7 @@ import datetime
 import os
 
 from pettingzoo.classic import chess_v3
+from pettingzoo.classic.chess import chess_utils
 
 import numpy
 import torch
@@ -244,3 +245,12 @@ class Game(AbstractGame):
         """
 
         return f"{action_number}. {(action_number // (8 * 73), (action_number // 73)%8, action_number % (8 * 8))}"
+
+    def map_to_human(self, action):
+        return chess_utils.action_to_move(self.env.unwrapped.board, action, False).uci()
+
+    def remote_translation(self, move):
+        chess_utils.make_move_mapping(move)
+
+        print(chess_utils.moves_to_actions)
+        return chess_utils.moves_to_actions[move]

@@ -10,6 +10,9 @@ from muzero import MuZero
 import session
 
 
+SESSION_KEY = "HelloWorld!"
+
+
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, numpy.integer):
@@ -48,14 +51,21 @@ def observer(session):
 
         @socket.on("GAME_ACTION")
         def handle_action(data):
-            print("Setting action : ", data)
+            key, action = data.split(".")
 
-            if (int(data) in cond["legal_move"]):
-                ray.get(session.set_action.remote(int(data)))
+            if key != SESSION_KEY:
+                return "Wrong Key"
+
+            if (action in cond["legal_move"]):
+                ray.get(session.set_action.remote(str(action)))
             else:
                 return "Wrong Move"
 
             return "Ok"
+
+        @socket.on("NEW_CHAT")
+        def handle_chat(data):
+            socket.emit("GAME_CHAT", data, broadcast=True)
 
         while(not cond["done"]):
             temp = ray.get(session.get_state.remote())
@@ -68,8 +78,6 @@ def observer(session):
 
                 socket.sleep(3)
                 continue
-
-    socket.on("GAME_ACTION", )
 
     if thread == None:
         thread = socket.start_background_task(backgroud_observer)

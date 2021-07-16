@@ -110,3 +110,9 @@ class AbstractGame(ABC):
             String representing the action.
         """
         return str(action_number)
+
+    def map_to_human(self, action):
+        raise NotImplemented
+
+    def remote_translation(self, move):
+        raise NotImplementedError

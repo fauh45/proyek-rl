@@ -176,13 +176,27 @@ class SelfPlay:
                         opponent, stacked_observations, session
                     )
 
+                if opponent == "remote" and muzero_player != self.game.to_play():
+                    action = self.game.remote_translation(action)
+
+                    print("Translated : " + str(action))
+
                 observation, reward, done = self.game.step(action)
 
                 try:
-                    ray.get(session.set_state.remote(self.game.env.unwrapped.board.fen(), self.game.legal_actions(), done and len(
-                        game_history.action_history) <= self.config.max_moves, user_turn=muzero_player != self.game.to_play()))
+                    print(str(list(self.game.legal_actions())))
+                    ray.get(
+                        session.set_state.remote(
+                            fen=self.game.env.unwrapped.board.mirror().fen(),
+                            legal_move=list(
+                                map(lambda x: self.game.map_to_human(x), self.game.legal_actions())),
+                            done=done and len(
+                                game_history.action_history) <= self.config.max_moves,
+                            user_turn=muzero_player != self.game.to_play()
+                        )
+                    )
                 except Exception as err:
-                    print("Environment does not have fen")
+                    print(err)
 
                 if render:
                     print(
@@ -231,7 +245,7 @@ class SelfPlay:
 
                     return action, None
                 except GetActionError as err:
-                    print(err)
+                    print("No action yet")
 
                     time.sleep(3)
         elif opponent == "expert":
