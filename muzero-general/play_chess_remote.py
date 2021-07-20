@@ -65,6 +65,7 @@ def observer(session):
 
         @socket.on("NEW_CHAT")
         def handle_chat(data):
+            print(data)
             socket.emit("GAME_CHAT", data, broadcast=True)
 
         while(not cond["done"]):
