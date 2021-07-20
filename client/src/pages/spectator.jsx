@@ -3,8 +3,8 @@ import Board from '../integrations/board';
 import { Navbar, Form, Button } from 'react-bootstrap';
 import { Formik, Form as FormikForm } from 'formik';
 import "../css/spectator.css";
-import {TextInput} from '../components/text_input';
-import socketClient  from "socket.io-client";
+import { TextInput } from '../components/text_input';
+import socketClient from "socket.io-client";
 
 
 function Spectator() {
@@ -12,20 +12,15 @@ function Spectator() {
     color: 'black'
   };
   const [messages, setMessages] = useState([]);
-  var socket = socketClient('http://127.0.0.1:5000');
-  
-  socket.on('GAME_CHAT',(chat)=>{
-    messages.push(chat)
-    setMessages(messages)
-    console.log (messages)
-  })
 
-  useEffect (()=>{
-    var item = document.createElement('p');
-    item.textContent = 'test'
-    var chat_box = document.getElementById('chat-box');
-    chat_box.appendChild(item)
-  })
+  useEffect(() => {
+    var socket = socketClient('http://127.0.0.1:5000');
+
+    socket.on('GAME_CHAT', (newMessage) => {
+      setMessages(current => [...current, newMessage])
+    });
+  }, []);
+
   return (
     <div className="App">
       <nav>
@@ -38,32 +33,32 @@ function Spectator() {
         <Board />
       </div>
       <div id="chat-box">
-        {messages && messages.map((value,index)=>{
+        {messages && messages.map((value, index) => {
           console.log(value)
-          return(
-          <p key={index}>{value}</p>
+          return (
+            <p key={index}>{value}</p>
           )
         })}
-        {/* {messages} */}
       </div>
       <div className="chat-input">
         <Formik
-          initialValues={{ chat: ''}}
-          onSubmit={(values)=>{
+          initialValues={{ chat: '' }}
+          onSubmit={(values) => {
+            var socket = socketClient('http://127.0.0.1:5000');
+
             socket.emit('NEW_CHAT', values.chat);
           }}
         >
           <FormikForm>
             <TextInput
-            name='chat'
-            type='text'
+              name='chat'
+              type='text'
             />
             <Button variant="primary" type="submit">
               Send
             </Button>
           </FormikForm>
         </Formik>
-
       </div>
     </div>
   );
