@@ -1,13 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import '../css/dashboard.css'
 import Board from '../integrations/board';
 import { Button, Navbar } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 function dashboard() {
-  const navStyle={
-    color: 'black'
-  };
+  const navStyle={color: 'black'};
 
   return (
     <div className="App">
