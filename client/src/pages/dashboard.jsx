@@ -1,19 +1,32 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import '../css/dashboard.css'
 import Board from '../integrations/board';
 import { Button, Navbar } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import socketClient from "socket.io-client";
 
-function dashboard() {
-  const navStyle={color: 'black'};
+function Dashboard() {
+  const navStyle={
+    color: 'black'
+  };
+  const [gameData, setGameData] = useState(null);
 
+  useEffect(() => {
+    var socket = socketClient('http://127.0.0.1:5000');
+
+    socket.on('GAME_DATA', (data) => {
+      console.log(data)
+      setGameData(JSON.parse(data))
+    });
+  }, []);
+  
   return (
     <div className="App">
       <nav>
         <Navbar.Brand style={navStyle} href="/home">MARBOT</Navbar.Brand>
       </nav>
       <div style={boardsContainer}>
-        <Board />
+        {gameData && (<Board fen={gameData.fen} />)}
       </div>
       <center>
         <ul className="btn-end">
@@ -36,4 +49,4 @@ const boardsContainer = {
     marginBottom: 50
   };
 
-export default dashboard;
+export default Dashboard;

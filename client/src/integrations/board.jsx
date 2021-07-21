@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Chess from "chess.js"; 
 import Chessboard from "chessboardjsx";
+import socketClient  from "socket.io-client";
 
 class Board extends Component {
   static propTypes = { children: PropTypes.func };
+  
 
   state = {
     fen: "start",
@@ -65,7 +67,10 @@ class Board extends Component {
       to: targetSquare,
       promotion: "q" // always promote to a queen for example simplicity
     });
+    // console.log(sourceSquare, targetSquare)
+    var socket = socketClient('http://127.0.0.1:5000');
 
+    socket.emit('GAME_ACTION', "HelloWorld!."+ sourceSquare + targetSquare);
     // illegal move
     if (move === null) return;
     this.setState(({ history, pieceSquare }) => ({
@@ -149,7 +154,8 @@ class Board extends Component {
   }
 }
 
-export default function MoveValidation() {
+export default function MoveValidation(props) {
+  console.log(props)
   return (
     <div>
       <Board>
@@ -167,7 +173,7 @@ export default function MoveValidation() {
           <Chessboard
             id="humanVsHuman"
             width={320}
-            position={position}
+            position={props.fen}
             onDrop={onDrop}
             onMouseOverSquare={onMouseOverSquare}
             onMouseOutSquare={onMouseOutSquare}
